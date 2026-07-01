@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# aism cache
+.cache/
+
+# local agent state — never publish
+.claude/
+
+# OS / editor
+.DS_Store
+*.swp

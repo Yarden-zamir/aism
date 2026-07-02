@@ -37,13 +37,14 @@ milestones.
 brew install yarden-zamir/tap/aism
 ```
 
-This pulls `python@3.12`, `fzf`, and `ripgrep`. Then run `aism`.
+This pulls `uv`, `fzf`, and `ripgrep` (uv manages the Python runtime, so there's
+no separate Python dependency). Then run `aism`.
 
 To run from source instead: `uv run python -m aism`.
 
 ## Requirements
 
-- Python ≥ 3.11 (Homebrew installs `python@3.12`; from source use [`uv`](https://docs.astral.sh/uv/))
+- Python ≥ 3.11 (the Homebrew formula lets [`uv`](https://docs.astral.sh/uv/) provide it)
 - [`fzf`](https://github.com/junegunn/fzf) and [`ripgrep`](https://github.com/BurntSushi/ripgrep)
 - optional: [`bat`](https://github.com/sharkdp/bat) for nicer previews
 

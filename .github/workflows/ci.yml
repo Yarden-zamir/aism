@@ -42,6 +42,7 @@ jobs:
       - name: Release to Homebrew
         run: |
           brew tap yarden-zamir/tap https://${{ secrets.TOKEN }}@github.com/Yarden-zamir/homebrew-tap.git
+          brew trust --tap yarden-zamir/tap
           brew bump-formula-pr \
             --force \
             --no-fork \

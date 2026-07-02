@@ -7,10 +7,10 @@ Owner: Yarden-zamir
 Quick start:
 
 ```
-uv run python -m aism            # interactive picker (fzf)
-uv run python -m aism search X   # sessions mentioning X (both tools)
-uv run python -m aism list --path ~/Github/foo --tool claude
-uv run python -m aism doctor     # check deps + source availability
+uv run aism            # interactive picker (fzf)
+uv run aism search X   # sessions mentioning X (both tools)
+uv run aism list --path ~/Github/foo --tool claude
+uv run aism doctor     # check deps + source availability
 ```
 
 ## 1. Purpose

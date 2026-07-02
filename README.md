@@ -4,11 +4,11 @@ Browse, search, and resume every local **Claude Code** and **opencode** session
 from one `fzf` window.
 
 ```
-uv run python -m aism                      # interactive picker (default)
-uv run python -m aism search "rate limit"  # find sessions that mention something
-uv run python -m aism list --path ~/Github/myproject --tool claude
-uv run python -m aism resume opencode ses_xxx
-uv run python -m aism doctor               # check deps + source availability
+uv run aism                      # interactive picker (default)
+uv run aism search "rate limit"  # find sessions that mention something
+uv run aism list --path ~/Github/myproject --tool claude
+uv run aism resume opencode ses_xxx
+uv run aism doctor               # check deps + source availability
 ```
 
 In the picker: type to fuzzy-match **name + path**; `ctrl-f` = search **all**
@@ -40,7 +40,7 @@ brew install yarden-zamir/tap/aism
 This pulls `uv`, `fzf`, and `ripgrep` (uv manages the Python runtime, so there's
 no separate Python dependency). Then run `aism`.
 
-To run from source instead: `uv run python -m aism`.
+To run from source instead: `uv run aism`.
 
 ## Requirements
 
@@ -68,7 +68,7 @@ Filters: `--tool`, `--path`, `--branch`, `--agent`, `--model`, `--since`,
 
 Working (v0.1.0) — M1–M4 done, verified against real Claude + opencode stores.
 See [SPEC.md](./SPEC.md) §14 for as-built notes and §12 for remaining polish
-(config file, packaged install). Run via `uv run python -m aism` today.
+(config file, packaged install). Run via `uv run aism` today.
 
 ## License
 

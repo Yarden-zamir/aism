@@ -23,7 +23,7 @@ jobs:
         uses: astral-sh/setup-uv@v6
 
       - name: Run tests
-        run: uv run --with pytest python -m pytest -q
+        run: uv run --locked pytest -q
 
       - name: Bump version and push tag
         id: tag_version

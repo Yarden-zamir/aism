@@ -33,6 +33,8 @@ milestones.
 
 ## Install
 
+Homebrew tap: https://github.com/Yarden-zamir/homebrew-tap
+
 ```
 brew install yarden-zamir/tap/aism
 ```

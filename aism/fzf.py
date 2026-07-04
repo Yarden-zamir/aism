@@ -29,6 +29,8 @@ SORT_LABEL = {"updated": "↓updated", "created": "↓created",
               "messages": "↓msgs", "path": "↑path"}
 
 HEADER = "↵ resume · ^f all · ^s sessions · ^t sort · ^o path · ^y copy · ⇧↑↓ scroll"
+DEFAULT_MODE = "content"
+MODE_LABEL = {"content": "search:all", "sessions": "sessions"}
 
 
 def sessions_file() -> Path:
@@ -66,7 +68,7 @@ def load_state() -> dict:
         st = json.loads(state_file().read_text())
     except Exception:
         st = {}
-    return {"mode": st.get("mode", "sessions"), "sort": st.get("sort", "updated")}
+    return {"mode": st.get("mode", DEFAULT_MODE), "sort": st.get("sort", "updated")}
 
 
 def save_state(*, mode: str | None = None, sort: str | None = None) -> dict:
@@ -87,7 +89,8 @@ def rotate_sort() -> dict:
 
 def prompt_text() -> str:
     st = load_state()
-    return f"{st['mode']} {SORT_LABEL.get(st['sort'], st['sort'])}> "
+    mode = MODE_LABEL.get(st["mode"], st["mode"])
+    return f"{mode} {SORT_LABEL.get(st['sort'], st['sort'])}> "
 
 
 def sort_sessions(sessions: list[Session], sort: str) -> list[Session]:
@@ -110,7 +113,7 @@ def load_sessions_data() -> list[Session]:
 
 def write_data(sessions: list[Session]) -> None:
     sessions_file().write_text(json.dumps([s.to_dict() for s in sessions]))
-    save_state(mode="sessions", sort="updated")  # predictable recency-first default
+    save_state(mode=DEFAULT_MODE, sort="updated")  # predictable recency-first default
 
 
 # ------------------------------------------------------------------ fzf ----
@@ -132,9 +135,8 @@ def build_argv() -> list[str]:
         "--header", HEADER,
         "--preview", f"{c} preview {{1}} {{2}} --query {{q}} --color",
         "--preview-window", "right,33%,wrap",
-        # `change` (content live-search) is bound but disabled until ctrl-f.
         "--bind", f"change:reload({view})",
-        "--bind", f"start:unbind(change)+{prompt}",
+        "--bind", f"start:disable-search+{prompt}",
         "--bind", f"ctrl-f:disable-search+execute-silent({c} _state --mode content)+rebind(change)+reload({view})+{prompt}",
         "--bind", f"ctrl-s:enable-search+execute-silent({c} _state --mode sessions)+unbind(change)+reload({view})+{prompt}",
         "--bind", f"ctrl-t:execute-silent({c} _state --sort next)+reload({view})+{prompt}",

@@ -206,12 +206,12 @@ full-text in one fzf window** (per decision).
   visible field therefore carries the **full, untruncated** cwd + title (fzf
   matches the whole item even when the display is cut at the screen edge), and
   we use `--with-nth 3..` with **no `--nth`**. This is why session search works.
-- **Default mode = session list**, fzf fuzzy-matching over the visible line
-  (full path + title + model).
-- **Content/"search all" mode (`ctrl-f`)** matches a session if its message
+- **Default mode = Content/"search all" (`ctrl-f`)**, which matches a session if its message
   content matches (ripgrep) **OR** its name/path/model matches — so title and
   directory hits are never dropped just because the body differs. Filtering is
   done by the `_view` subcommand (fzf's own search is disabled in this mode).
+- **Session list mode (`ctrl-s`)** uses fzf fuzzy-matching over the visible line
+  (full path + title + model).
 - **Sort toggle (`ctrl-t`)** cycles `updated → created → messages → path`,
   reflected live in the prompt (via `transform-prompt`). Sort + mode live in
   `~/.cache/aism/state.json`; the picker renders from a structured
@@ -219,8 +219,8 @@ full-text in one fzf window** (per decision).
   the sources.
 - **Preview pane width: 33%** (`--preview-window right,33%,wrap`).
 - **`ctrl-f` / `ctrl-s` toggle Content vs Sessions mode.** The `change` event
-  is bound to `reload(aism _view {q})` but **unbound at start**, so Sessions
-  mode is plain fzf fuzzy filtering over the visible line. `ctrl-f` does
+  is bound to `reload(aism _view {q})` at start, so Content mode is the default.
+  `ctrl-f` does
   `disable-search + _state --mode content + rebind(change) + reload(_view {q})`
   so typing filters via `_view` (ripgrep + name/path); `ctrl-s` does
   `enable-search + _state --mode sessions + unbind(change) + reload(_view {q})`

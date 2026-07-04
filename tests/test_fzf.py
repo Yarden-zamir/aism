@@ -50,4 +50,16 @@ def test_rotate_sort_cycles(tmp_path, monkeypatch):
 def test_prompt_reflects_mode_and_sort(tmp_path, monkeypatch):
     monkeypatch.setenv("XDG_CACHE_HOME", str(tmp_path))
     fzf.save_state(mode="content", sort="messages")
-    assert fzf.prompt_text() == "content ↓msgs> "
+    assert fzf.prompt_text() == "search:all ↓msgs> "
+
+
+def test_default_mode_is_search_all(tmp_path, monkeypatch):
+    monkeypatch.setenv("XDG_CACHE_HOME", str(tmp_path))
+    assert fzf.load_state()["mode"] == "content"
+    assert fzf.prompt_text() == "search:all ↓updated> "
+
+
+def test_fzf_starts_in_search_all_mode():
+    argv = fzf.build_argv()
+    assert any("start:disable-search+transform-prompt" in arg for arg in argv)
+    assert any("change:reload" in arg for arg in argv)

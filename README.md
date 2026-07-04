@@ -11,8 +11,9 @@ uv run aism resume opencode ses_xxx
 uv run aism doctor               # check deps + source availability
 ```
 
-In the picker: type to fuzzy-match **name + path**; `ctrl-f` = search **all**
-(name + path + message content); `ctrl-s` back to sessions; `ctrl-t` cycle
+In the picker: type to search **all** by default (name + path + message
+content); `ctrl-s` switches to sessions-only fuzzy matching; `ctrl-f` switches
+back to all; `ctrl-t` cycles
 sort (updated/created/messages/path); `enter` resume; `ctrl-o` print path;
 `ctrl-y` copy id; `shift-↑/↓` scroll preview.
 

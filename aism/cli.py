@@ -228,6 +228,11 @@ def cmd_prompt(args) -> int:
     return 0
 
 
+def cmd_toggle_search(args) -> int:
+    sys.stdout.write(fzf.toggle_search_action(args.query or ""))
+    return 0
+
+
 # --------------------------------------------------------------- argparse ----
 def _add_filters(p: argparse.ArgumentParser) -> None:
     p.add_argument("--tool", choices=["claude", "opencode"], help="limit to one tool")
@@ -295,6 +300,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_state.set_defaults(func=cmd_state)
 
     sub.add_parser("_prompt").set_defaults(func=cmd_prompt)
+
+    p_toggle = sub.add_parser("_toggle_search")
+    p_toggle.add_argument("query", nargs="?", default="")
+    p_toggle.set_defaults(func=cmd_toggle_search)
 
     return parser
 

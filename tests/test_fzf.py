@@ -63,3 +63,21 @@ def test_fzf_starts_in_search_all_mode():
     argv = fzf.build_argv()
     assert any("start:disable-search+transform-prompt" in arg for arg in argv)
     assert any("change:reload" in arg for arg in argv)
+    assert any("ctrl-f:transform" in arg for arg in argv)
+    assert not any("ctrl-s:" in arg for arg in argv)
+
+
+def test_ctrl_f_toggles_search_modes(tmp_path, monkeypatch):
+    monkeypatch.setenv("XDG_CACHE_HOME", str(tmp_path))
+    fzf.save_state(mode="content", sort="updated")
+
+    action = fzf.toggle_search_action("rate limit")
+    assert fzf.load_state()["mode"] == "sessions"
+    assert "enable-search" in action
+    assert "unbind(change)" in action
+    assert "_view 'rate limit'" in action
+
+    action = fzf.toggle_search_action("rate limit")
+    assert fzf.load_state()["mode"] == "content"
+    assert "disable-search" in action
+    assert "rebind(change)" in action

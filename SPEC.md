@@ -206,11 +206,11 @@ full-text in one fzf window** (per decision).
   visible field therefore carries the **full, untruncated** cwd + title (fzf
   matches the whole item even when the display is cut at the screen edge), and
   we use `--with-nth 3..` with **no `--nth`**. This is why session search works.
-- **Default mode = Content/"search all" (`ctrl-f`)**, which matches a session if its message
+- **Default mode = Content/"search all"**, which matches a session if its message
   content matches (ripgrep) **OR** its name/path/model matches — so title and
   directory hits are never dropped just because the body differs. Filtering is
   done by the `_view` subcommand (fzf's own search is disabled in this mode).
-- **Session list mode (`ctrl-s`)** uses fzf fuzzy-matching over the visible line
+- **Session list mode** uses fzf fuzzy-matching over the visible line
   (full path + title + model).
 - **Sort toggle (`ctrl-t`)** cycles `updated → created → messages → path`,
   reflected live in the prompt (via `transform-prompt`). Sort + mode live in
@@ -218,13 +218,12 @@ full-text in one fzf window** (per decision).
   `~/.cache/aism/sessions.json` through `_view`, so re-sorting never re-reads
   the sources.
 - **Preview pane width: 33%** (`--preview-window right,33%,wrap`).
-- **`ctrl-f` / `ctrl-s` toggle Content vs Sessions mode.** The `change` event
-  is bound to `reload(aism _view {q})` at start, so Content mode is the default.
-  `ctrl-f` does
-  `disable-search + _state --mode content + rebind(change) + reload(_view {q})`
-  so typing filters via `_view` (ripgrep + name/path); `ctrl-s` does
-  `enable-search + _state --mode sessions + unbind(change) + reload(_view {q})`
-  to return to fuzzy. `_view` reads `sessions.json` (fast) each reload.
+- **`ctrl-f` toggles Content vs Sessions mode.** The `change` event is bound to
+  `reload(aism _view {q})` at start, so Content mode is the default. The toggle
+  switches to Sessions mode with
+  `enable-search + unbind(change) + reload(_view {q})`, and switches back to
+  Content mode with `disable-search + rebind(change) + reload(_view {q})`.
+  `_view` reads `sessions.json` (fast) each reload.
 - **Preview pane:** `aism preview {tool} {id} --query {q}` renders the
   transcript (metadata header + role-labeled turns; in content mode it
   highlights the query with inverse video). Plain ANSI in v1; `bat` is M5.
@@ -232,10 +231,10 @@ full-text in one fzf window** (per decision).
   `--path <glob/substr>`, `--tool claude|opencode`, `--since <date>`,
   `--until <date>`, `--branch <name>`, `--agent <name>`, `--model <substr>`,
   `--grep <regex>` (non-interactive content filter).
-- **Keybindings** (compact header: `↵ resume · ^f all · ^s sessions · ^t sort ·
+- **Keybindings** (compact header: `↵ resume · ^f search mode · ^t sort ·
   ^o path · ^y copy · ⇧↑↓ scroll`):
   - `enter` → **resume** the selected session (§7) — the primary action.
-  - `ctrl-f` → "search all" mode (name + path + content); `ctrl-s` → sessions.
+  - `ctrl-f` → toggle between "search all" (name + path + content) and sessions.
   - `ctrl-t` → cycle sort order (updated/created/messages/path).
   - `ctrl-o` → print session path to stdout and exit (scripting).
   - `ctrl-y` → copy session id to clipboard (`pbcopy`).

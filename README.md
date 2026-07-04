@@ -12,8 +12,8 @@ uv run aism doctor               # check deps + source availability
 ```
 
 In the picker: type to search **all** by default (name + path + message
-content); `ctrl-s` switches to sessions-only fuzzy matching; `ctrl-f` switches
-back to all; `ctrl-t` cycles
+content); `ctrl-f` toggles between all search and sessions-only fuzzy matching;
+`ctrl-t` cycles
 sort (updated/created/messages/path); `enter` resume; `ctrl-o` print path;
 `ctrl-y` copy id; `shift-↑/↓` scroll preview.
 

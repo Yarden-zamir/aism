@@ -28,7 +28,7 @@ SORTS = ["updated", "created", "messages", "path"]
 SORT_LABEL = {"updated": "↓updated", "created": "↓created",
               "messages": "↓msgs", "path": "↑path"}
 
-HEADER = "↵ resume · ^f all · ^s sessions · ^t sort · ^o path · ^y copy · ⇧↑↓ scroll"
+HEADER = "↵ resume · ^f search mode · ^t sort · ^o path · ^y copy · ⇧↑↓ scroll"
 DEFAULT_MODE = "content"
 MODE_LABEL = {"content": "search:all", "sessions": "sessions"}
 
@@ -93,6 +93,18 @@ def prompt_text() -> str:
     return f"{mode} {SORT_LABEL.get(st['sort'], st['sort'])}> "
 
 
+def toggle_search_action(query: str) -> str:
+    st = load_state()
+    c = _self_cmd()
+    view = f"{c} _view {shlex.quote(query)}" if query else f"{c} _view"
+    prompt = f"transform-prompt({c} _prompt)"
+    if st["mode"] == "content":
+        save_state(mode="sessions")
+        return f"enable-search+unbind(change)+reload({view})+{prompt}"
+    save_state(mode="content")
+    return f"disable-search+rebind(change)+reload({view})+{prompt}"
+
+
 def sort_sessions(sessions: list[Session], sort: str) -> list[Session]:
     if sort == "created":
         return sorted(sessions, key=lambda s: s.created, reverse=True)
@@ -137,8 +149,7 @@ def build_argv() -> list[str]:
         "--preview-window", "right,33%,wrap",
         "--bind", f"change:reload({view})",
         "--bind", f"start:disable-search+{prompt}",
-        "--bind", f"ctrl-f:disable-search+execute-silent({c} _state --mode content)+rebind(change)+reload({view})+{prompt}",
-        "--bind", f"ctrl-s:enable-search+execute-silent({c} _state --mode sessions)+unbind(change)+reload({view})+{prompt}",
+        "--bind", f"ctrl-f:transform({c} _toggle_search {{q}})",
         "--bind", f"ctrl-t:execute-silent({c} _state --sort next)+reload({view})+{prompt}",
         "--bind", "ctrl-y:execute-silent(printf %s {2} | pbcopy)",
         "--bind", "shift-up:preview-up",
